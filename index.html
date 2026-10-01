@@ -59,30 +59,39 @@
     .mode-switch button{padding:.42rem .65rem;font-size:.6rem;}
   }
 
-  /* ================= 패치 노트 배너 (공용) ================= */
+  /* ================= 패치 노트 모달 (공용) ================= */
+  .patch-backdrop{
+    position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:690;opacity:0;
+    transition:opacity .35s ease;pointer-events:none;
+  }
+  .patch-backdrop.show{opacity:1;pointer-events:auto;}
+  .patch-backdrop[hidden]{display:none;}
+
   .patch-banner{
-    position:fixed;left:50%;bottom:1.25rem;transform:translateX(-50%) translateY(20px);
-    width:min(92vw, 420px);background:#1a1a1a;color:#fff;border-radius:12px;
-    padding:1.1rem 1.1rem 1.1rem 1.3rem;display:flex;gap:.75rem;align-items:flex-start;
-    box-shadow:0 12px 32px rgba(0,0,0,.25);z-index:700;opacity:0;
-    transition:opacity .4s ease, transform .4s cubic-bezier(.22,1,.36,1);
+    position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.92);
+    width:min(90vw, 440px);max-height:min(80vh, 520px);overflow-y:auto;
+    background:#1a1a1a;color:#fff;border-radius:14px;
+    padding:1.6rem 1.5rem 1.5rem;
+    box-shadow:0 24px 60px rgba(0,0,0,.35);z-index:700;opacity:0;
+    transition:opacity .35s ease, transform .35s cubic-bezier(.22,1,.36,1);
+    pointer-events:none;
   }
   .patch-banner[hidden]{display:none;}
-  .patch-banner.show{opacity:1;transform:translateX(-50%) translateY(0);}
-  .patch-banner-inner{flex:1;min-width:0;}
-  .patch-banner-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#d4af5a;margin-bottom:.35rem;}
-  .patch-banner-title{font-family:'Pretendard',-apple-system,sans-serif;font-size:1rem;font-weight:600;margin-bottom:.4rem;}
-  .patch-banner-body{font-family:'Pretendard',-apple-system,sans-serif;font-size:.82rem;line-height:1.55;color:#ccc;max-height:160px;overflow-y:auto;}
-  .patch-banner-body ul{padding-left:1.1rem;margin:.3rem 0;}
-  .patch-banner-body h4{font-size:.85rem;margin:.5rem 0 .2rem;color:#fff;}
+  .patch-banner.show{opacity:1;transform:translate(-50%,-50%) scale(1);pointer-events:auto;}
+  .patch-banner-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:#d4af5a;margin-bottom:.5rem;}
+  .patch-banner-title{font-family:'Pretendard',-apple-system,sans-serif;font-size:1.15rem;font-weight:600;margin-bottom:.6rem;padding-right:1.5rem;}
+  .patch-banner-body{font-family:'Pretendard',-apple-system,sans-serif;font-size:.86rem;line-height:1.6;color:#ccc;}
+  .patch-banner-body ul{padding-left:1.1rem;margin:.4rem 0;}
+  .patch-banner-body h4{font-size:.9rem;margin:.6rem 0 .25rem;color:#fff;}
   .patch-banner-close{
-    flex:none;background:none;border:none;color:#999;font-size:1.3rem;line-height:1;cursor:pointer;
-    padding:.1rem .2rem;transition:color .2s ease;
+    position:absolute;top:1rem;right:1.1rem;
+    background:none;border:none;color:#999;font-size:1.4rem;line-height:1;cursor:pointer;
+    padding:.1rem .3rem;transition:color .2s ease;
   }
   .patch-banner-close:hover{color:#fff;}
 
   @media (max-width:520px){
-    .patch-banner{bottom:.75rem;width:94vw;padding:1rem;}
+    .patch-banner{width:88vw;padding:1.3rem 1.2rem 1.2rem;}
   }
 
   /* =========================================================
@@ -237,13 +246,12 @@
   <button type="button" data-mode="classic">CLASSIC</button>
 </div>
 
+<div class="patch-backdrop" id="patchBackdrop" onclick="dismissPatchNote()" hidden></div>
 <div class="patch-banner" id="patchBanner" hidden>
-  <div class="patch-banner-inner">
-    <div class="patch-banner-label">패치 노트</div>
-    <div class="patch-banner-title" id="patchBannerTitle"></div>
-    <div class="patch-banner-body" id="patchBannerBody"></div>
-  </div>
   <button type="button" class="patch-banner-close" onclick="dismissPatchNote()" aria-label="닫기">×</button>
+  <div class="patch-banner-label">패치 노트</div>
+  <div class="patch-banner-title" id="patchBannerTitle"></div>
+  <div class="patch-banner-body" id="patchBannerBody"></div>
 </div>
 
 <!-- ================= SIMPLE 모드 ================= -->
@@ -339,8 +347,8 @@
 /* =========================================================
    ⚙️ 설정 — 본인 GitHub 정보로 수정하세요
    ========================================================= */
-const GITHUB_OWNER  = 'nkxwert';  // 예: octocat
-const GITHUB_REPO   = 'weeamusic';        // 예: weea-music-site
+const GITHUB_OWNER  = 'YOUR_GITHUB_USERNAME';  // 예: octocat
+const GITHUB_REPO   = 'YOUR_REPO_NAME';        // 예: weea-music-site
 const GITHUB_BRANCH = 'main';                  // 기본 브랜치 이름 (보통 main)
 const ITEMS_TXT_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/items.txt`;
 const RELEASES_API  = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`;
@@ -496,20 +504,24 @@ async function checkPatchNotes(){
 
 function showPatchNoteBanner(rel){
   const banner = document.getElementById('patchBanner');
+  const backdrop = document.getElementById('patchBackdrop');
   document.getElementById('patchBannerTitle').textContent = rel.name || rel.tag_name;
   document.getElementById('patchBannerBody').innerHTML = tinyMarkdown(rel.body);
   banner.dataset.tag = rel.tag_name;
   banner.hidden = false;
-  requestAnimationFrame(() => banner.classList.add('show'));
+  backdrop.hidden = false;
+  requestAnimationFrame(() => { banner.classList.add('show'); backdrop.classList.add('show'); });
 }
 
 function dismissPatchNote(){
   const banner = document.getElementById('patchBanner');
+  const backdrop = document.getElementById('patchBackdrop');
   if(banner.dataset.tag){
     try{ localStorage.setItem(SEEN_RELEASE_KEY, banner.dataset.tag); }catch(e){}
   }
   banner.classList.remove('show');
-  setTimeout(() => { banner.hidden = true; }, 400);
+  backdrop.classList.remove('show');
+  setTimeout(() => { banner.hidden = true; backdrop.hidden = true; }, 350);
 }
 
 /* ---------------- SIMPLE 모드 로직 ---------------- */
