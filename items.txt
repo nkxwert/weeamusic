@@ -1,0 +1,41 @@
+# =========================================================
+# items.txt — Music Resources 사이트 데이터 파일
+# 이 파일을 GitHub repo 루트에 올려두면 사이트가 자동으로 읽어갑니다.
+#
+# 한 줄 = 항목 하나
+# 형식: 항목|목록|발매연도|제목|설명|링크
+#   항목   : 악보 / 교재 / 음원   (이 세 단어 중 하나, 정확히 입력)
+#   목록   : 음원일 때만 사용 — 그루터기 / 언약과꿈 / 기타   (그 외는 - 로 비워두기)
+#   발매연도: 없으면 - 로 비워두기 (있으면 목록에 조용한 연도 표시가 붙습니다)
+#   설명   : 없으면 - 로 비워두기
+#   링크   : 구글 드라이브 링크면 버튼이 자동으로 "Download", 그 외 사이트 링크면 "Go"로 표시됩니다
+#
+# #으로 시작하는 줄과 빈 줄은 무시됩니다 (주석/메모용으로 자유롭게 사용하세요)
+# =========================================================
+
+# ---------- 악보 ----------
+악보|-|-|2025 WRC 악보 모음집|제목이랑 같음.|https://drive.google.com/uc?export=download&id=1AoT1y0_lC5ExsCbB-aRL4UmqhsauH59X
+악보|-|-|찬양선교총국|더 많은 악보는 이 사이트를 방문하세요.|http://www.praise237.com/index.php
+
+# ---------- 교재 ----------
+# (아직 등록된 교재가 없습니다. 추가하려면 아래 형식으로 줄을 추가하세요)
+# 교재|-|-|제목|설명|링크
+
+# ---------- 음원 : 그루터기 ----------
+음원|그루터기|2025|그루터기 25집|세계복음화전도협회에서 발매한 그루터기 25집입니다|https://drive.google.com/drive/folders/1FUrImpVuOgXI7oJerSoT4DC_YXyR4sk1?usp=sharing
+음원|그루터기|2019|그루터기 19집|세계복음화전도협회에서 발매|https://drive.google.com/drive/folders/160Md4jZ8IyK4C7xHx6AeDsbqW2cbRq1Z
+음원|그루터기|2013|그루터기 13집|세계복음화전도협회에서 발매|https://drive.google.com/drive/folders/16D8_yz29PZkvbrp0BjaZjO-SZxgQL9Vj
+음원|그루터기|2012|그루터기 12집|세계복음화전도협회에서 발매|https://drive.google.com/drive/folders/136Ksb9S2pnc3YSFyqM3gciCbJlj-o65r
+음원|그루터기|2011|그루터기 11집|세계복음화전도협회에서 발매|https://drive.google.com/drive/folders/1LrHFMx3wfp1QutIinbWThIh9q0FaEPyI
+음원|그루터기|2010|그루터기 10집|세계복음화전도협회에서 발매|https://drive.google.com/drive/folders/1RWfItKDTha5j4TuvP1KHQ_r4qR9r-H68
+음원|그루터기|2009|그루터기 9집|세계복음화전도협회에서 발매|https://drive.google.com/drive/folders/14lhyMdEVK8J6shrhGhf28NA8DDtPbMfD
+음원|그루터기|2008|그루터기 8집|세계복음화전도협회에서 발매|https://drive.google.com/drive/folders/19bM_IDFIN3YGOghehpFmD3tx0zG8XHWG
+음원|그루터기|-|그루터기 라이브|-|https://drive.google.com/drive/folders/1jeFKJ09VQ73HhimQOSVUj8GlRhRjQ-pN
+
+# ---------- 음원 : 언약과 꿈 ----------
+음원|언약과꿈|-|예수생명 best1|-|https://drive.google.com/drive/folders/15f5D0ImQd9r9Tg8BzmkKZs8QJwCIlZkP
+음원|언약과꿈|-|예수생명 best2|-|https://drive.google.com/drive/folders/1T0BtoMzyaID5zJ-RNzum_BlepekbSA4j
+
+# ---------- 음원 : 기타 ----------
+# (아직 등록된 음원이 없습니다)
+# 음원|기타|-|제목|설명|링크

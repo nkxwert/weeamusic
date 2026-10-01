@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Resources</title>
+<meta name="description" content="악보, 교재, 음원 자료를 다운로드할 수 있는 자료실입니다.">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/static/pretendard.css');
+
+  :root{
+    --s-paper:#FAF9F5;
+    --s-ink:#201D19;
+    --s-ink-soft:#726B5E;
+    --s-line:#E7E2D7;
+    --s-brass:#8A6A2E;
+    --s-brass-deep:#6B4F1F;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{background:#ffffff;}
+  body{min-height:100vh;overflow-x:hidden;color:#1a1a1a;}
+  button{font:inherit;background:none;}
+  a{color:inherit;text-decoration:none;}
+
+  a:focus-visible, button:focus-visible{outline:2px solid #1a1a1a;outline-offset:3px;border-radius:2px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{
+      animation-duration:.01ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:.01ms !important;
+      scroll-behavior:auto !important;
+    }
+  }
+
+  /* ================= 디자인 전환 토글 (공용) ================= */
+  .mode-switch{
+    position:fixed;top:1.1rem;right:1.1rem;z-index:600;
+    display:inline-flex;background:#fff;border:1px solid #e0e0e0;
+    border-radius:999px;padding:3px;box-shadow:0 2px 10px rgba(0,0,0,.05);
+  }
+  .mode-switch button{
+    position:relative;z-index:2;border:none;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.06em;
+    padding:.5rem .9rem;border-radius:999px;color:#999;
+    transition:color .35s ease;
+  }
+  .mode-switch button.active{color:#fff;}
+  .mode-switch .thumb{
+    position:absolute;top:3px;left:3px;bottom:3px;width:calc(50% - 3px);
+    background:#1a1a1a;border-radius:999px;
+    transition:transform .4s cubic-bezier(.65,0,.35,1);z-index:1;
+  }
+  .mode-switch[data-active="classic"] .thumb{transform:translateX(100%);}
+
+  @media (max-width:520px){
+    .mode-switch{top:.7rem;right:.7rem;}
+    .mode-switch button{padding:.42rem .65rem;font-size:.6rem;}
+  }
+
+  /* ================= 패치 노트 배너 (공용) ================= */
+  .patch-banner{
+    position:fixed;left:50%;bottom:1.25rem;transform:translateX(-50%) translateY(20px);
+    width:min(92vw, 420px);background:#1a1a1a;color:#fff;border-radius:12px;
+    padding:1.1rem 1.1rem 1.1rem 1.3rem;display:flex;gap:.75rem;align-items:flex-start;
+    box-shadow:0 12px 32px rgba(0,0,0,.25);z-index:700;opacity:0;
+    transition:opacity .4s ease, transform .4s cubic-bezier(.22,1,.36,1);
+  }
+  .patch-banner[hidden]{display:none;}
+  .patch-banner.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .patch-banner-inner{flex:1;min-width:0;}
+  .patch-banner-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:#d4af5a;margin-bottom:.35rem;}
+  .patch-banner-title{font-family:'Pretendard',-apple-system,sans-serif;font-size:1rem;font-weight:600;margin-bottom:.4rem;}
+  .patch-banner-body{font-family:'Pretendard',-apple-system,sans-serif;font-size:.82rem;line-height:1.55;color:#ccc;max-height:160px;overflow-y:auto;}
+  .patch-banner-body ul{padding-left:1.1rem;margin:.3rem 0;}
+  .patch-banner-body h4{font-size:.85rem;margin:.5rem 0 .2rem;color:#fff;}
+  .patch-banner-close{
+    flex:none;background:none;border:none;color:#999;font-size:1.3rem;line-height:1;cursor:pointer;
+    padding:.1rem .2rem;transition:color .2s ease;
+  }
+  .patch-banner-close:hover{color:#fff;}
+
+  @media (max-width:520px){
+    .patch-banner{bottom:.75rem;width:94vw;padding:1rem;}
+  }
+
+  /* =========================================================
+     SIMPLE 모드 — 기본 디자인
+     ========================================================= */
+  #app-simple{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;background:var(--s-paper);min-height:100vh;}
+  #app-simple.is-hidden{display:none;}
+
+  .s-wrap{max-width:600px;margin:0 auto;padding:5.5rem 1.75rem 4rem;}
+
+  .s-header{margin-bottom:2.5rem;}
+  .s-brand{display:flex;align-items:center;gap:.55rem;margin-bottom:.6rem;}
+  .s-brand svg{width:20px;height:20px;flex:none;color:var(--s-ink);}
+  .s-brand span{font-size:1.28rem;font-weight:600;letter-spacing:-0.01em;color:var(--s-ink);}
+  .s-tag{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:var(--s-ink-soft);text-transform:uppercase;}
+
+  .s-tabs{display:flex;gap:1.5rem;border-bottom:1px solid var(--s-line);margin-bottom:1.5rem;}
+  .s-tabs button{
+    font-family:'JetBrains Mono',monospace;font-size:.82rem;letter-spacing:.03em;
+    color:var(--s-ink-soft);border:none;cursor:pointer;
+    padding:.2rem 0 .85rem;border-bottom:2px solid transparent;margin-bottom:-1px;
+    transition:color .25s ease, border-color .25s ease;
+  }
+  .s-tabs button:hover{color:var(--s-ink);}
+  .s-tabs button.active{color:var(--s-ink);border-color:var(--s-brass);}
+
+  .s-subtabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.75rem;animation:sFadeDown .35s ease both;}
+  .s-subtabs button{
+    font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.02em;
+    border:1px solid var(--s-line);border-radius:999px;background:#fff;color:var(--s-ink-soft);
+    cursor:pointer;padding:.4rem .95rem;transition:all .25s ease;
+  }
+  .s-subtabs button:hover{border-color:var(--s-brass);color:var(--s-ink);}
+  .s-subtabs button.active{background:var(--s-brass);border-color:var(--s-brass);color:#fff;}
+
+  @keyframes sFadeDown{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+  .s-list{list-style:none;min-height:90px;}
+  .s-item{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--s-line);opacity:0;animation:sItemIn .45s cubic-bezier(.22,1,.36,1) forwards;animation-delay:calc(var(--i, 0) * 45ms);}
+  .s-list li:last-child{border-bottom:none;}
+  @keyframes sItemIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+  .s-item-body{display:flex;align-items:baseline;gap:.85rem;min-width:0;}
+  .s-item-year{flex:none;width:2.6rem;text-align:right;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600;color:var(--s-brass);letter-spacing:.02em;}
+  .s-item-text{min-width:0;}
+  .s-item-name{font-size:.98rem;font-weight:600;color:var(--s-ink);margin-bottom:.2rem;}
+  .s-item-desc{font-size:.8rem;color:var(--s-ink-soft);line-height:1.5;}
+
+  .s-btn{
+    flex:none;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.03em;
+    border:1px solid var(--s-ink);background:#fff;color:var(--s-ink);
+    padding:.5rem 1.05rem;border-radius:5px;cursor:pointer;
+    transition:all .25s ease;
+  }
+  .s-btn:hover{background:var(--s-brass);border-color:var(--s-brass);color:#fff;}
+
+  .s-empty{padding:2.5rem 0;text-align:center;color:#b3ab9c;font-size:.86rem;font-family:'JetBrains Mono',monospace;}
+
+  .s-footer{margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--s-line);font-family:'JetBrains Mono',monospace;font-size:.72rem;color:#b3ab9c;}
+
+  @media (max-width:520px){
+    .s-wrap{padding:4.5rem 1.25rem 3rem;}
+    .s-tabs{gap:1.1rem;}
+    .s-item-year{width:2.2rem;font-size:.68rem;}
+  }
+
+  /* =========================================================
+     CLASSIC 모드 — 원래 디자인 (구조/애니메이션 동일, 데이터만 연결)
+     ========================================================= */
+  #app-classic{font-family:'Cormorant Garamond', serif;}
+  #app-classic.is-hidden{display:none;}
+
+  #app-classic .welcome-screen{
+    position:fixed;top:0;left:0;width:100%;height:100vh;background:#ffffff;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    z-index:200;transition:opacity 1.2s ease, transform 1.2s ease;
+  }
+  #app-classic .welcome-screen.hidden{opacity:0;transform:translateY(-50px);pointer-events:none;}
+
+  #app-classic .welcome-logo{width:150px;height:150px;margin-bottom:3rem;animation:cPulseScale 2s ease-in-out infinite;}
+  #app-classic .welcome-logo img{width:100%;height:100%;object-fit:contain;}
+  @keyframes cPulseScale{0%,100%{transform:scale(1);opacity:.9;}50%{transform:scale(1.1);opacity:1;}}
+
+  #app-classic .welcome-title{font-size:4rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;animation:cScaleInTitle 1s cubic-bezier(0.34,1.56,0.64,1);}
+  @keyframes cScaleInTitle{from{opacity:0;transform:scale(1.3);}to{opacity:1;transform:scale(1);}}
+
+  #app-classic .welcome-subtitle{font-size:1.2rem;color:#666;letter-spacing:.2em;text-transform:uppercase;margin-bottom:3rem;animation:cScaleInSubtitle 1s cubic-bezier(0.34,1.56,0.64,1) .2s both;}
+  @keyframes cScaleInSubtitle{from{opacity:0;transform:scale(1.2);}to{opacity:1;transform:scale(1);}}
+
+  #app-classic .category-buttons{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;animation:cScaleInButton .8s cubic-bezier(0.34,1.56,0.64,1) .4s both;}
+  @keyframes cScaleInButton{from{opacity:0;transform:scale(1.3);}to{opacity:1;transform:scale(1);}}
+
+  #app-classic .category-btn{
+    padding:1rem 2.5rem;border:2px solid #1a1a1a;background:#ffffff;color:#1a1a1a;
+    font-family:'JetBrains Mono',monospace;font-size:1rem;cursor:pointer;
+    transition:all .4s cubic-bezier(0.4,0,0.2,1);text-transform:uppercase;letter-spacing:.1em;
+    transform-origin:center;
+  }
+  #app-classic .category-btn:hover{background:#1a1a1a;color:#fff;transform:scale(1.1);box-shadow:0 8px 20px rgba(0,0,0,.2);}
+
+  #app-classic .back-home{
+    position:fixed;top:2rem;left:2rem;width:50px;height:50px;border:1px solid #e0e0e0;border-radius:50%;
+    display:none;align-items:center;justify-content:center;cursor:pointer;font-size:1.5rem;
+    transition:all .4s cubic-bezier(0.4,0,0.2,1);background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.05);
+    z-index:250;transform-origin:center;
+  }
+  #app-classic .back-home.active{display:flex;animation:cFadeInButton .5s ease forwards;}
+  @keyframes cFadeInButton{from{opacity:0;transform:scale(1.2);}to{opacity:1;transform:scale(1);}}
+  #app-classic .back-home:hover{border-color:#1a1a1a;box-shadow:0 6px 24px rgba(0,0,0,.15);transform:scale(1.15);}
+
+  #app-classic .container{max-width:700px;width:100%;margin:0 auto;padding:4rem 2rem;opacity:0;transform:translateY(30px);display:none;}
+  #app-classic .container.active{display:block;animation:cFadeInUp 1s ease forwards;}
+  @keyframes cFadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+
+  #app-classic h1{font-size:3.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:.5rem;text-align:center;}
+  #app-classic .subtitle{font-size:1rem;text-align:center;color:#666;margin-bottom:3rem;letter-spacing:.1em;text-transform:uppercase;font-weight:400;}
+
+  #app-classic .item-list{list-style:none;margin-bottom:2rem;}
+  #app-classic .item{border:1px solid #e0e0e0;padding:2rem;margin-bottom:1.5rem;transition:all .4s cubic-bezier(0.4,0,0.2,1);animation:cScaleInItem .6s cubic-bezier(0.34,1.56,0.64,1);transform-origin:center;}
+  @keyframes cScaleInItem{from{opacity:0;transform:scale(1.1) translateX(-20px);}to{opacity:1;transform:scale(1) translateX(0);}}
+  #app-classic .item:hover{border-color:#1a1a1a;box-shadow:0 8px 16px rgba(0,0,0,.12);transform:scale(1.02) translateY(-4px);}
+
+  #app-classic .item-name{font-size:1.5rem;font-weight:400;margin-bottom:1rem;}
+  #app-classic .item-desc{font-size:1rem;color:#666;line-height:1.6;margin-bottom:1.5rem;}
+
+  #app-classic .btn{
+    padding:.6rem 1.5rem;border:1px solid #1a1a1a;background:#fff;color:#1a1a1a;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;font-size:.85rem;transition:all .3s cubic-bezier(0.4,0,0.2,1);
+    text-decoration:none;display:inline-block;transform-origin:center;
+  }
+  #app-classic .btn:hover{background:#1a1a1a;color:#fff;transform:scale(1.05) translateX(5px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
+
+  #app-classic .footer{text-align:center;margin-top:4rem;padding:2rem 0;font-size:.9rem;color:#999;font-family:'JetBrains Mono',monospace;border-top:1px solid #f0f0f0;}
+
+  @media (max-width:768px){
+    #app-classic h1{font-size:2.5rem;}
+    #app-classic .welcome-title{font-size:3rem;}
+    #app-classic .welcome-logo{width:100px;height:100px;}
+    #app-classic .category-buttons{flex-direction:column;width:100%;padding:0 2rem;}
+    #app-classic .category-btn{width:100%;}
+    #app-classic .item{padding:1.5rem;}
+    #app-classic .item-name{font-size:1.3rem;}
+    #app-classic .back-home{top:1rem;left:1rem;}
+  }
+</style>
+</head>
+<body>
+
+<div class="mode-switch" id="modeSwitch" data-active="simple">
+  <div class="thumb"></div>
+  <button type="button" data-mode="simple" class="active">SIMPLE</button>
+  <button type="button" data-mode="classic">CLASSIC</button>
+</div>
+
+<div class="patch-banner" id="patchBanner" hidden>
+  <div class="patch-banner-inner">
+    <div class="patch-banner-label">패치 노트</div>
+    <div class="patch-banner-title" id="patchBannerTitle"></div>
+    <div class="patch-banner-body" id="patchBannerBody"></div>
+  </div>
+  <button type="button" class="patch-banner-close" onclick="dismissPatchNote()" aria-label="닫기">×</button>
+</div>
+
+<!-- ================= SIMPLE 모드 ================= -->
+<div id="app-simple">
+  <div class="s-wrap">
+    <header class="s-header">
+      <div class="s-brand">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+        <span>Music Resources</span>
+      </div>
+      <p class="s-tag">음원 · 악보 · 교재 자료실</p>
+    </header>
+
+    <nav class="s-tabs" id="sTabs">
+      <button type="button" data-tab="sheetMusic" class="active">Sheet Music</button>
+      <button type="button" data-tab="textbook">Textbook</button>
+      <button type="button" data-tab="audio">Audio</button>
+    </nav>
+
+    <nav class="s-subtabs" id="sSubtabs" hidden></nav>
+
+    <ul class="s-list" id="sList"><li class="s-empty">불러오는 중...</li></ul>
+
+    <footer class="s-footer">문의 : rgsnoah1150@gmail.com</footer>
+  </div>
+</div>
+
+<!-- ================= CLASSIC 모드 ================= -->
+<div id="app-classic" class="is-hidden">
+
+  <div class="welcome-screen" id="welcomeScreen">
+    <div class="welcome-logo">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2HLjw-GT-BI-06s-dMWPU1Mc5kkq2MPIgPebkwIuXKQ&s=10" alt="Music">
+    </div>
+    <h2 class="welcome-title">Music Resources</h2>
+    <p class="welcome-subtitle">Choose Your Category</p>
+    <div class="category-buttons">
+      <button type="button" class="category-btn" onclick="showCategory('sheetMusic')">Sheet Music</button>
+      <button type="button" class="category-btn" onclick="showCategory('textbook')">Textbook</button>
+      <button type="button" class="category-btn" onclick="showAudioCategories()">Audio</button>
+    </div>
+  </div>
+
+  <div class="welcome-screen hidden" id="audioCategories">
+    <div class="welcome-logo">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2HLjw-GT-BI-06s-dMWPU1Mc5kkq2MPIgPebkwIuXKQ&s=10" alt="Music">
+    </div>
+    <h2 class="welcome-title">Audio</h2>
+    <p class="welcome-subtitle">Choose Your Collection</p>
+    <div class="category-buttons" id="audioCategoryButtons"></div>
+  </div>
+
+  <div class="back-home" id="backButton" onclick="backToHome()" title="처음으로">↩</div>
+
+  <div class="container" id="sheetMusic">
+    <h1>Sheet Music</h1>
+    <p class="subtitle">Download Your Scores</p>
+    <ul class="item-list" id="list-sheetMusic"></ul>
+    <div class="footer">문의 : rgsnoah1150@gmail.com</div>
+  </div>
+
+  <div class="container" id="textbook">
+    <h1>Textbook</h1>
+    <p class="subtitle">Download Your Materials</p>
+    <ul class="item-list" id="list-textbook"></ul>
+    <div class="footer">문의 : rgsnoah1150@gmail.com</div>
+  </div>
+
+  <div class="container" id="audioGrooturgy">
+    <h1>그루터기</h1>
+    <p class="subtitle">Download Your Tracks</p>
+    <ul class="item-list" id="list-grooturgy"></ul>
+    <div class="footer">문의 : rgsnoah1150@gmail.com</div>
+  </div>
+
+  <div class="container" id="audioCovenant">
+    <h1>언약과 꿈</h1>
+    <p class="subtitle">Download Your Tracks</p>
+    <ul class="item-list" id="list-covenant"></ul>
+    <div class="footer">문의 : rgsnoah1150@gmail.com</div>
+  </div>
+
+  <div class="container" id="audioEtc">
+    <h1>기타</h1>
+    <p class="subtitle">Download Your Tracks</p>
+    <ul class="item-list" id="list-etc"></ul>
+    <div class="footer">문의 : rgsnoah1150@gmail.com</div>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   ⚙️ 설정 — 본인 GitHub 정보로 수정하세요
+   ========================================================= */
+const GITHUB_OWNER  = 'YOUR_GITHUB_USERNAME';  // 예: octocat
+const GITHUB_REPO   = 'YOUR_REPO_NAME';        // 예: weea-music-site
+const GITHUB_BRANCH = 'main';                  // 기본 브랜치 이름 (보통 main)
+const ITEMS_TXT_URL = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/items.txt`;
+const RELEASES_API  = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/releases/latest`;
+const SEEN_RELEASE_KEY = 'weea_last_seen_release';
+
+/* =========================================================
+   SITE_DATA — 단일 데이터 소스.
+   평소에는 GitHub의 items.txt를 읽어서 자동으로 채워지고,
+   fetch가 실패할 때만 아래 FALLBACK_DATA가 대신 쓰입니다.
+   SIMPLE / CLASSIC 두 디자인이 이 객체 하나를 같이 읽습니다.
+   ========================================================= */
+let SITE_DATA = {
+  sheetMusic: {
+    items: [
+      { name:"2025 WRC 악보 모음집", desc:"제목이랑 같음.", year:"", url:"https://drive.google.com/uc?export=download&id=1AoT1y0_lC5ExsCbB-aRL4UmqhsauH59X", label:"Download" },
+      { name:"찬양선교총국", desc:"더 많은 악보는 이 사이트를 방문하세요.", year:"", url:"http://www.praise237.com/index.php", label:"Go" }
+    ]
+  },
+  textbook: {
+    items: []
+  },
+  audio: {
+    groups: [
+      { key:"grooturgy", containerId:"audioGrooturgy", label:"그루터기", items:[
+        { name:"그루터기 25집", desc:"세계복음화전도협회에서 발매한 그루터기 25집입니다", year:"2025", url:"https://drive.google.com/drive/folders/1FUrImpVuOgXI7oJerSoT4DC_YXyR4sk1?usp=sharing" },
+        { name:"그루터기 19집", desc:"세계복음화전도협회에서 발매", year:"2019", url:"https://drive.google.com/drive/folders/160Md4jZ8IyK4C7xHx6AeDsbqW2cbRq1Z" },
+        { name:"그루터기 13집", desc:"세계복음화전도협회에서 발매", year:"2013", url:"https://drive.google.com/drive/folders/16D8_yz29PZkvbrp0BjaZjO-SZxgQL9Vj" },
+        { name:"그루터기 12집", desc:"세계복음화전도협회에서 발매", year:"2012", url:"https://drive.google.com/drive/folders/136Ksb9S2pnc3YSFyqM3gciCbJlj-o65r" },
+        { name:"그루터기 11집", desc:"세계복음화전도협회에서 발매", year:"2011", url:"https://drive.google.com/drive/folders/1LrHFMx3wfp1QutIinbWThIh9q0FaEPyI" },
+        { name:"그루터기 10집", desc:"세계복음화전도협회에서 발매", year:"2010", url:"https://drive.google.com/drive/folders/1RWfItKDTha5j4TuvP1KHQ_r4qR9r-H68" },
+        { name:"그루터기 9집", desc:"세계복음화전도협회에서 발매", year:"2009", url:"https://drive.google.com/drive/folders/14lhyMdEVK8J6shrhGhf28NA8DDtPbMfD" },
+        { name:"그루터기 8집", desc:"세계복음화전도협회에서 발매", year:"2008", url:"https://drive.google.com/drive/folders/19bM_IDFIN3YGOghehpFmD3tx0zG8XHWG" },
+        { name:"그루터기 라이브", desc:"", year:"", url:"https://drive.google.com/drive/folders/1jeFKJ09VQ73HhimQOSVUj8GlRhRjQ-pN" }
+      ]},
+      { key:"covenant", containerId:"audioCovenant", label:"언약과 꿈", items:[
+        { name:"예수생명 best1", desc:"", year:"", url:"https://drive.google.com/drive/folders/15f5D0ImQd9r9Tg8BzmkKZs8QJwCIlZkP" },
+        { name:"예수생명 best2", desc:"", year:"", url:"https://drive.google.com/drive/folders/1T0BtoMzyaID5zJ-RNzum_BlepekbSA4j" }
+      ]},
+      { key:"etc", containerId:"audioEtc", label:"기타", items:[] }
+    ]
+  }
+};
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* items.txt 한 줄 형식: 항목|목록|발매연도|제목|설명|링크
+   - 항목: 악보 / 교재 / 음원
+   - 목록: 음원일 때만 사용 (그루터기 / 언약과꿈 / 기타), 나머지는 - 로 비워두기
+   - 발매연도·설명: 없으면 - 로 비워두기
+   - #으로 시작하는 줄과 빈 줄은 무시 (주석) */
+function parseItemsTxt(text){
+  const data = {
+    sheetMusic: { items: [] },
+    textbook: { items: [] },
+    audio: { groups: [
+      { key:'grooturgy', containerId:'audioGrooturgy', label:'그루터기', items:[] },
+      { key:'covenant',  containerId:'audioCovenant',  label:'언약과 꿈', items:[] },
+      { key:'etc',       containerId:'audioEtc',       label:'기타',     items:[] }
+    ]}
+  };
+  const catKeyByLabel = { '악보':'sheetMusic', '교재':'textbook', '음원':'audio' };
+  const groupKeyByLabel = { '그루터기':'grooturgy', '언약과꿈':'covenant', '기타':'etc' };
+
+  text.split('\n').forEach((raw, idx) => {
+    const line = raw.trim();
+    if(!line || line.startsWith('#')) return;
+    const parts = line.split('|').map(s => s.trim());
+    if(parts.length !== 6){
+      console.warn(`items.txt 줄 ${idx+1}: 필드가 6개가 아니라 건너뜀 → "${line}"`);
+      return;
+    }
+    const [catRaw, groupRaw, yearRaw, name, descRaw, url] = parts;
+    const cat = catKeyByLabel[catRaw];
+    if(!cat || !name || !url){
+      console.warn(`items.txt 줄 ${idx+1}: 형식 오류로 건너뜀 → "${line}"`);
+      return;
+    }
+    const item = {
+      name,
+      desc: descRaw === '-' ? '' : descRaw,
+      year: yearRaw === '-' ? '' : yearRaw,
+      url,
+      label: url.includes('drive.google.com') ? 'Download' : 'Go'
+    };
+    if(cat === 'audio'){
+      const groupKey = groupKeyByLabel[groupRaw];
+      const group = data.audio.groups.find(g => g.key === groupKey);
+      if(!group){
+        console.warn(`items.txt 줄 ${idx+1}: 알 수 없는 목록 '${groupRaw}' → 건너뜀`);
+        return;
+      }
+      group.items.push(item);
+    } else {
+      data[cat].items.push(item);
+    }
+  });
+  return data;
+}
+
+async function loadSiteData(){
+  try{
+    const res = await fetch(ITEMS_TXT_URL, { cache:'no-store' });
+    if(res.ok){
+      const text = await res.text();
+      const parsed = parseItemsTxt(text);
+      const total = parsed.sheetMusic.items.length + parsed.textbook.items.length
+        + parsed.audio.groups.reduce((sum, g) => sum + g.items.length, 0);
+      if(total > 0) SITE_DATA = parsed; // 빈 파일이면 기본 데이터 유지
+    }
+  }catch(err){
+    console.warn('items.txt 로드 실패, 기본 데이터로 표시합니다:', err);
+  }
+  buildClassicContent();
+  renderSimpleList();
+}
+
+/* ---------------- 패치 노트 ---------------- */
+function tinyMarkdown(md){
+  if(!md) return '';
+  let html = escapeHtml(md);
+  html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  html = html.replace(/^### (.*)$/gm, '<h4>$1</h4>').replace(/^## (.*)$/gm, '<h4>$1</h4>').replace(/^# (.*)$/gm, '<h4>$1</h4>');
+  html = html.replace(/(^|\n)((?:[-*] .+(?:\n|$))+)/g, (m, pre, list) => {
+    const items = list.trim().split('\n').map(l => `<li>${l.replace(/^[-*]\s+/, '')}</li>`).join('');
+    return `${pre}<ul>${items}</ul>`;
+  });
+  html = html.replace(/\n{2,}/g, '<br><br>').replace(/\n/g, '<br>');
+  return html;
+}
+
+async function checkPatchNotes(){
+  try{
+    const res = await fetch(RELEASES_API, { cache:'no-store' });
+    if(!res.ok) return; // 릴리즈가 아직 없거나, repo 미설정, rate limit 등
+    const rel = await res.json();
+    if(!rel || !rel.tag_name) return;
+
+    let lastSeen = null;
+    try{ lastSeen = localStorage.getItem(SEEN_RELEASE_KEY); }catch(e){}
+
+    if(lastSeen === null){
+      // 첫 방문 — 배너 없이 기준점만 저장
+      try{ localStorage.setItem(SEEN_RELEASE_KEY, rel.tag_name); }catch(e){}
+      return;
+    }
+    if(lastSeen !== rel.tag_name) showPatchNoteBanner(rel);
+  }catch(err){
+    // 네트워크 오류 등은 방문자에게 영향 없이 조용히 무시
+  }
+}
+
+function showPatchNoteBanner(rel){
+  const banner = document.getElementById('patchBanner');
+  document.getElementById('patchBannerTitle').textContent = rel.name || rel.tag_name;
+  document.getElementById('patchBannerBody').innerHTML = tinyMarkdown(rel.body);
+  banner.dataset.tag = rel.tag_name;
+  banner.hidden = false;
+  requestAnimationFrame(() => banner.classList.add('show'));
+}
+
+function dismissPatchNote(){
+  const banner = document.getElementById('patchBanner');
+  if(banner.dataset.tag){
+    try{ localStorage.setItem(SEEN_RELEASE_KEY, banner.dataset.tag); }catch(e){}
+  }
+  banner.classList.remove('show');
+  setTimeout(() => { banner.hidden = true; }, 400);
+}
+
+/* ---------------- SIMPLE 모드 로직 ---------------- */
+const simpleState = { tab:'sheetMusic', sub:null };
+
+function sItemsFor(tab, sub){
+  if(tab === 'audio'){
+    const g = SITE_DATA.audio.groups.find(g => g.key === sub) || SITE_DATA.audio.groups[0];
+    return g.items;
+  }
+  return SITE_DATA[tab].items;
+}
+
+function renderSimpleSubtabs(){
+  const el = document.getElementById('sSubtabs');
+  if(simpleState.tab !== 'audio'){ el.hidden = true; el.innerHTML=''; return; }
+  if(!simpleState.sub) simpleState.sub = SITE_DATA.audio.groups[0].key;
+  el.hidden = false;
+  el.innerHTML = SITE_DATA.audio.groups.map(g =>
+    `<button type="button" data-sub="${g.key}" class="${g.key===simpleState.sub?'active':''}">${escapeHtml(g.label)}</button>`
+  ).join('');
+}
+
+function renderSimpleList(){
+  renderSimpleSubtabs();
+  const list = document.getElementById('sList');
+  const items = sItemsFor(simpleState.tab, simpleState.sub);
+  if(!items.length){
+    list.innerHTML = '<li class="s-empty">아직 등록된 자료가 없습니다.</li>';
+    return;
+  }
+  const showYear = items.some(it => it.year);
+  list.innerHTML = items.map((it, i) => {
+    return `
+    <li class="s-item" style="--i:${i}">
+      <div class="s-item-body">
+        ${showYear ? `<span class="s-item-year">${it.year || ''}</span>` : ''}
+        <div class="s-item-text">
+          <div class="s-item-name">${escapeHtml(it.name)}</div>
+          ${it.desc ? `<div class="s-item-desc">${escapeHtml(it.desc)}</div>` : ''}
+        </div>
+      </div>
+      <a class="s-btn" href="${it.url}" target="_blank" rel="noopener">${it.label || 'Download'}</a>
+    </li>`;
+  }).join('');
+}
+
+document.getElementById('sTabs').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-tab]');
+  if(!btn) return;
+  simpleState.tab = btn.dataset.tab;
+  if(simpleState.tab !== 'audio') simpleState.sub = null;
+  document.querySelectorAll('#sTabs button').forEach(b => b.classList.toggle('active', b===btn));
+  renderSimpleList();
+});
+
+document.getElementById('sSubtabs').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-sub]');
+  if(!btn) return;
+  simpleState.sub = btn.dataset.sub;
+  renderSimpleList();
+});
+
+/* ---------------- CLASSIC 모드 로직 ---------------- */
+function classicItemsHtml(items){
+  if(!items.length){
+    return '<li class="item" style="text-align:center;color:#999;">등록된 자료가 없습니다.</li>';
+  }
+  return items.map(it => `
+    <li class="item">
+      <div class="item-name">${escapeHtml(it.name)}</div>
+      ${it.desc ? `<div class="item-desc">${escapeHtml(it.desc)}</div>` : ''}
+      <a href="${it.url}" class="btn" target="_blank" rel="noopener">${it.label || 'Download'}</a>
+    </li>`).join('');
+}
+
+function buildClassicContent(){
+  document.getElementById('list-sheetMusic').innerHTML = classicItemsHtml(SITE_DATA.sheetMusic.items);
+  document.getElementById('list-textbook').innerHTML = classicItemsHtml(SITE_DATA.textbook.items);
+
+  document.getElementById('audioCategoryButtons').innerHTML = SITE_DATA.audio.groups.map(g =>
+    `<button type="button" class="category-btn" onclick="showCategory('${g.containerId}')">${escapeHtml(g.label)}</button>`
+  ).join('');
+
+  const listElByKey = { grooturgy:'list-grooturgy', covenant:'list-covenant', etc:'list-etc' };
+  SITE_DATA.audio.groups.forEach(g => {
+    document.getElementById(listElByKey[g.key]).innerHTML = classicItemsHtml(g.items);
+  });
+}
+
+function showAudioCategories(){
+  document.getElementById('welcomeScreen').classList.add('hidden');
+  document.getElementById('audioCategories').classList.remove('hidden');
+  document.getElementById('backButton').classList.add('active');
+}
+
+function showCategory(category){
+  document.getElementById('welcomeScreen').classList.add('hidden');
+  document.getElementById('audioCategories').classList.add('hidden');
+  document.querySelectorAll('#app-classic .container').forEach(el => el.classList.remove('active'));
+  document.getElementById(category).classList.add('active');
+  document.getElementById('backButton').classList.add('active');
+}
+
+function backToHome(){
+  document.getElementById('welcomeScreen').classList.remove('hidden');
+  document.getElementById('audioCategories').classList.add('hidden');
+  document.querySelectorAll('#app-classic .container').forEach(el => el.classList.remove('active'));
+  document.getElementById('backButton').classList.remove('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+/* ---------------- 디자인 전환 ---------------- */
+function setMode(mode){
+  document.getElementById('app-simple').classList.toggle('is-hidden', mode !== 'simple');
+  document.getElementById('app-classic').classList.toggle('is-hidden', mode !== 'classic');
+  const switcher = document.getElementById('modeSwitch');
+  switcher.dataset.active = mode;
+  switcher.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
+}
+
+document.getElementById('modeSwitch').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-mode]');
+  if(!btn) return;
+  setMode(btn.dataset.mode);
+});
+
+/* ---------------- 초기화 ---------------- */
+loadSiteData();
+checkPatchNotes();
+</script>
+</body>
+</html>
