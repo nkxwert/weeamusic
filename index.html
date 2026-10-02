@@ -52,7 +52,7 @@
     background:#1a1a1a;border-radius:999px;
     transition:transform .4s cubic-bezier(.65,0,.35,1);z-index:1;
   }
-  .mode-switch[data-active="classic"] .thumb{transform:translateX(100%);}
+  .mode-switch[data-active="report"] .thumb{transform:translateX(100%);}
 
   @media (max-width:520px){
     .mode-switch{top:.7rem;right:.7rem;}
@@ -159,83 +159,26 @@
   }
 
   /* =========================================================
-     CLASSIC 모드 — 원래 디자인 (구조/애니메이션 동일, 데이터만 연결)
+     REPORT 화면 — 문의
      ========================================================= */
-  #app-classic{font-family:'Cormorant Garamond', serif;}
-  #app-classic.is-hidden{display:none;}
+  #app-report{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Malgun Gothic',sans-serif;background:var(--s-paper);}
+  #app-report.is-hidden{display:none;}
 
-  #app-classic .welcome-screen{
-    position:fixed;top:0;left:0;width:100%;height:100vh;background:#ffffff;
-    display:flex;flex-direction:column;justify-content:center;align-items:center;
-    z-index:200;transition:opacity 1.2s ease, transform 1.2s ease;
+  #app-report .r-wrap{
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:2rem;gap:1.1rem;
   }
-  #app-classic .welcome-screen.hidden{opacity:0;transform:translateY(-50px);pointer-events:none;}
-
-  #app-classic .welcome-logo{width:150px;height:150px;margin-bottom:3rem;animation:cPulseScale 2s ease-in-out infinite;}
-  #app-classic .welcome-logo img{width:100%;height:100%;object-fit:contain;}
-  @keyframes cPulseScale{0%,100%{transform:scale(1);opacity:.9;}50%{transform:scale(1.1);opacity:1;}}
-
-  #app-classic .welcome-title{font-size:4rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:1rem;animation:cScaleInTitle 1s cubic-bezier(0.34,1.56,0.64,1);}
-  @keyframes cScaleInTitle{from{opacity:0;transform:scale(1.3);}to{opacity:1;transform:scale(1);}}
-
-  #app-classic .welcome-subtitle{font-size:1.2rem;color:#666;letter-spacing:.2em;text-transform:uppercase;margin-bottom:3rem;animation:cScaleInSubtitle 1s cubic-bezier(0.34,1.56,0.64,1) .2s both;}
-  @keyframes cScaleInSubtitle{from{opacity:0;transform:scale(1.2);}to{opacity:1;transform:scale(1);}}
-
-  #app-classic .category-buttons{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;animation:cScaleInButton .8s cubic-bezier(0.34,1.56,0.64,1) .4s both;}
-  @keyframes cScaleInButton{from{opacity:0;transform:scale(1.3);}to{opacity:1;transform:scale(1);}}
-
-  #app-classic .category-btn{
-    padding:1rem 2.5rem;border:2px solid #1a1a1a;background:#ffffff;color:#1a1a1a;
-    font-family:'JetBrains Mono',monospace;font-size:1rem;cursor:pointer;
-    transition:all .4s cubic-bezier(0.4,0,0.2,1);text-transform:uppercase;letter-spacing:.1em;
-    transform-origin:center;
+  #app-report .r-icon{width:40px;height:40px;color:var(--s-brass);}
+  #app-report .r-icon svg{width:100%;height:100%;}
+  #app-report .r-title{font-size:1.4rem;font-weight:600;color:var(--s-ink);}
+  #app-report .r-desc{font-size:.9rem;color:var(--s-ink-soft);line-height:1.7;max-width:320px;}
+  #app-report .r-btn{
+    margin-top:.6rem;font-family:'JetBrains Mono',monospace;font-size:.85rem;letter-spacing:.03em;
+    border:1px solid var(--s-ink);background:#fff;color:var(--s-ink);
+    padding:.85rem 2.1rem;border-radius:6px;cursor:pointer;text-decoration:none;
+    transition:all .25s ease;
   }
-  #app-classic .category-btn:hover{background:#1a1a1a;color:#fff;transform:scale(1.1);box-shadow:0 8px 20px rgba(0,0,0,.2);}
-
-  #app-classic .back-home{
-    position:fixed;top:2rem;left:2rem;width:50px;height:50px;border:1px solid #e0e0e0;border-radius:50%;
-    display:none;align-items:center;justify-content:center;cursor:pointer;font-size:1.5rem;
-    transition:all .4s cubic-bezier(0.4,0,0.2,1);background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.05);
-    z-index:250;transform-origin:center;
-  }
-  #app-classic .back-home.active{display:flex;animation:cFadeInButton .5s ease forwards;}
-  @keyframes cFadeInButton{from{opacity:0;transform:scale(1.2);}to{opacity:1;transform:scale(1);}}
-  #app-classic .back-home:hover{border-color:#1a1a1a;box-shadow:0 6px 24px rgba(0,0,0,.15);transform:scale(1.15);}
-
-  #app-classic .container{max-width:700px;width:100%;margin:0 auto;padding:4rem 2rem;opacity:0;transform:translateY(30px);display:none;}
-  #app-classic .container.active{display:block;animation:cFadeInUp 1s ease forwards;}
-  @keyframes cFadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
-
-  #app-classic h1{font-size:3.5rem;font-weight:300;letter-spacing:-0.02em;margin-bottom:.5rem;text-align:center;}
-  #app-classic .subtitle{font-size:1rem;text-align:center;color:#666;margin-bottom:3rem;letter-spacing:.1em;text-transform:uppercase;font-weight:400;}
-
-  #app-classic .item-list{list-style:none;margin-bottom:2rem;}
-  #app-classic .item{border:1px solid #e0e0e0;padding:2rem;margin-bottom:1.5rem;transition:all .4s cubic-bezier(0.4,0,0.2,1);animation:cScaleInItem .6s cubic-bezier(0.34,1.56,0.64,1);transform-origin:center;}
-  @keyframes cScaleInItem{from{opacity:0;transform:scale(1.1) translateX(-20px);}to{opacity:1;transform:scale(1) translateX(0);}}
-  #app-classic .item:hover{border-color:#1a1a1a;box-shadow:0 8px 16px rgba(0,0,0,.12);transform:scale(1.02) translateY(-4px);}
-
-  #app-classic .item-name{font-size:1.5rem;font-weight:400;margin-bottom:1rem;}
-  #app-classic .item-desc{font-size:1rem;color:#666;line-height:1.6;margin-bottom:1.5rem;}
-
-  #app-classic .btn{
-    padding:.6rem 1.5rem;border:1px solid #1a1a1a;background:#fff;color:#1a1a1a;cursor:pointer;
-    font-family:'JetBrains Mono',monospace;font-size:.85rem;transition:all .3s cubic-bezier(0.4,0,0.2,1);
-    text-decoration:none;display:inline-block;transform-origin:center;
-  }
-  #app-classic .btn:hover{background:#1a1a1a;color:#fff;transform:scale(1.05) translateX(5px);box-shadow:0 4px 12px rgba(0,0,0,.15);}
-
-  #app-classic .footer{text-align:center;margin-top:4rem;padding:2rem 0;font-size:.9rem;color:#999;font-family:'JetBrains Mono',monospace;border-top:1px solid #f0f0f0;}
-
-  @media (max-width:768px){
-    #app-classic h1{font-size:2.5rem;}
-    #app-classic .welcome-title{font-size:3rem;}
-    #app-classic .welcome-logo{width:100px;height:100px;}
-    #app-classic .category-buttons{flex-direction:column;width:100%;padding:0 2rem;}
-    #app-classic .category-btn{width:100%;}
-    #app-classic .item{padding:1.5rem;}
-    #app-classic .item-name{font-size:1.3rem;}
-    #app-classic .back-home{top:1rem;left:1rem;}
-  }
+  #app-report .r-btn:hover{background:var(--s-brass);border-color:var(--s-brass);color:#fff;}
 </style>
 </head>
 <body>
@@ -243,7 +186,7 @@
 <div class="mode-switch" id="modeSwitch" data-active="simple">
   <div class="thumb"></div>
   <button type="button" data-mode="simple" class="active">SIMPLE</button>
-  <button type="button" data-mode="classic">CLASSIC</button>
+  <button type="button" data-mode="report">REPORT</button>
 </div>
 
 <div class="patch-backdrop" id="patchBackdrop" onclick="dismissPatchNote()" hidden></div>
@@ -279,68 +222,16 @@
   </div>
 </div>
 
-<!-- ================= CLASSIC 모드 ================= -->
-<div id="app-classic" class="is-hidden">
-
-  <div class="welcome-screen" id="welcomeScreen">
-    <div class="welcome-logo">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2HLjw-GT-BI-06s-dMWPU1Mc5kkq2MPIgPebkwIuXKQ&s=10" alt="Music">
+<!-- ================= REPORT 화면 (문의) ================= -->
+<div id="app-report" class="is-hidden">
+  <div class="r-wrap">
+    <div class="r-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
     </div>
-    <h2 class="welcome-title">Music Resources</h2>
-    <p class="welcome-subtitle">Choose Your Category</p>
-    <div class="category-buttons">
-      <button type="button" class="category-btn" onclick="showCategory('sheetMusic')">Sheet Music</button>
-      <button type="button" class="category-btn" onclick="showCategory('textbook')">Textbook</button>
-      <button type="button" class="category-btn" onclick="showAudioCategories()">Audio</button>
-    </div>
+    <h2 class="r-title">문의</h2>
+    <p class="r-desc">사이트 이용 중 궁금한 점이나<br>제보하실 내용이 있다면 알려주세요.</p>
+    <a class="r-btn" href="mailto:rgsnoah1150@gmail.com?subject=Music%20Resources%20%EB%AC%B8%EC%9D%98">메일 보내기</a>
   </div>
-
-  <div class="welcome-screen hidden" id="audioCategories">
-    <div class="welcome-logo">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2HLjw-GT-BI-06s-dMWPU1Mc5kkq2MPIgPebkwIuXKQ&s=10" alt="Music">
-    </div>
-    <h2 class="welcome-title">Audio</h2>
-    <p class="welcome-subtitle">Choose Your Collection</p>
-    <div class="category-buttons" id="audioCategoryButtons"></div>
-  </div>
-
-  <div class="back-home" id="backButton" onclick="backToHome()" title="처음으로">↩</div>
-
-  <div class="container" id="sheetMusic">
-    <h1>Sheet Music</h1>
-    <p class="subtitle">Download Your Scores</p>
-    <ul class="item-list" id="list-sheetMusic"></ul>
-    <div class="footer">문의 : rgsnoah1150@gmail.com</div>
-  </div>
-
-  <div class="container" id="textbook">
-    <h1>Textbook</h1>
-    <p class="subtitle">Download Your Materials</p>
-    <ul class="item-list" id="list-textbook"></ul>
-    <div class="footer">문의 : rgsnoah1150@gmail.com</div>
-  </div>
-
-  <div class="container" id="audioGrooturgy">
-    <h1>그루터기</h1>
-    <p class="subtitle">Download Your Tracks</p>
-    <ul class="item-list" id="list-grooturgy"></ul>
-    <div class="footer">문의 : rgsnoah1150@gmail.com</div>
-  </div>
-
-  <div class="container" id="audioCovenant">
-    <h1>언약과 꿈</h1>
-    <p class="subtitle">Download Your Tracks</p>
-    <ul class="item-list" id="list-covenant"></ul>
-    <div class="footer">문의 : rgsnoah1150@gmail.com</div>
-  </div>
-
-  <div class="container" id="audioEtc">
-    <h1>기타</h1>
-    <p class="subtitle">Download Your Tracks</p>
-    <ul class="item-list" id="list-etc"></ul>
-    <div class="footer">문의 : rgsnoah1150@gmail.com</div>
-  </div>
-
 </div>
 
 <script>
@@ -358,7 +249,6 @@ const SEEN_RELEASE_KEY = 'weea_last_seen_release';
    SITE_DATA — 단일 데이터 소스.
    평소에는 GitHub의 items.txt를 읽어서 자동으로 채워지고,
    fetch가 실패할 때만 아래 FALLBACK_DATA가 대신 쓰입니다.
-   SIMPLE / CLASSIC 두 디자인이 이 객체 하나를 같이 읽습니다.
    ========================================================= */
 let SITE_DATA = {
   sheetMusic: {
@@ -463,7 +353,6 @@ async function loadSiteData(){
   }catch(err){
     console.warn('items.txt 로드 실패, 기본 데이터로 표시합니다:', err);
   }
-  buildClassicContent();
   renderSimpleList();
 }
 
@@ -585,59 +474,10 @@ document.getElementById('sSubtabs').addEventListener('click', e => {
   renderSimpleList();
 });
 
-/* ---------------- CLASSIC 모드 로직 ---------------- */
-function classicItemsHtml(items){
-  if(!items.length){
-    return '<li class="item" style="text-align:center;color:#999;">등록된 자료가 없습니다.</li>';
-  }
-  return items.map(it => `
-    <li class="item">
-      <div class="item-name">${escapeHtml(it.name)}</div>
-      ${it.desc ? `<div class="item-desc">${escapeHtml(it.desc)}</div>` : ''}
-      <a href="${it.url}" class="btn" target="_blank" rel="noopener">${it.label || 'Download'}</a>
-    </li>`).join('');
-}
-
-function buildClassicContent(){
-  document.getElementById('list-sheetMusic').innerHTML = classicItemsHtml(SITE_DATA.sheetMusic.items);
-  document.getElementById('list-textbook').innerHTML = classicItemsHtml(SITE_DATA.textbook.items);
-
-  document.getElementById('audioCategoryButtons').innerHTML = SITE_DATA.audio.groups.map(g =>
-    `<button type="button" class="category-btn" onclick="showCategory('${g.containerId}')">${escapeHtml(g.label)}</button>`
-  ).join('');
-
-  const listElByKey = { grooturgy:'list-grooturgy', covenant:'list-covenant', etc:'list-etc' };
-  SITE_DATA.audio.groups.forEach(g => {
-    document.getElementById(listElByKey[g.key]).innerHTML = classicItemsHtml(g.items);
-  });
-}
-
-function showAudioCategories(){
-  document.getElementById('welcomeScreen').classList.add('hidden');
-  document.getElementById('audioCategories').classList.remove('hidden');
-  document.getElementById('backButton').classList.add('active');
-}
-
-function showCategory(category){
-  document.getElementById('welcomeScreen').classList.add('hidden');
-  document.getElementById('audioCategories').classList.add('hidden');
-  document.querySelectorAll('#app-classic .container').forEach(el => el.classList.remove('active'));
-  document.getElementById(category).classList.add('active');
-  document.getElementById('backButton').classList.add('active');
-}
-
-function backToHome(){
-  document.getElementById('welcomeScreen').classList.remove('hidden');
-  document.getElementById('audioCategories').classList.add('hidden');
-  document.querySelectorAll('#app-classic .container').forEach(el => el.classList.remove('active'));
-  document.getElementById('backButton').classList.remove('active');
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-/* ---------------- 디자인 전환 ---------------- */
+/* ---------------- 화면 전환 ---------------- */
 function setMode(mode){
   document.getElementById('app-simple').classList.toggle('is-hidden', mode !== 'simple');
-  document.getElementById('app-classic').classList.toggle('is-hidden', mode !== 'classic');
+  document.getElementById('app-report').classList.toggle('is-hidden', mode !== 'report');
   const switcher = document.getElementById('modeSwitch');
   switcher.dataset.active = mode;
   switcher.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.mode === mode));
