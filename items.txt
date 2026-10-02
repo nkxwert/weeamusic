@@ -22,9 +22,10 @@
 # 교재|-|-|제목|설명|링크
 
 # ---------- 음원 : 그루터기 ----------
-음원|그루터기|2025|그루터기 19집|황제를 살린 영적 황제|https://drive.google.com/drive/folders/160Md4jZ8IyK4C7xHx6AeDsbqW2cbRq1Z?usp=drive_link
-음원|그루터기|2024|그루터기 18집|영원하신 여호|https://drive.google.com/drive/folders/10k3fddZcjw5lGZwLp5Kl5lK_vUjT-JnQ?usp=drive_link
-음원|그루터기|2018|그루터기 13집|렘넌트를 축복합니|https://drive.google.com/drive/folders/16D8_yz29PZkvbrp0BjaZjO-SZxgQL9Vj
+음원|그루터기|2026|그루터기 20집|황제를 살린 영적 황제|https://drive.google.com/drive/folders/1TLBpQ3hHyKSC5j0VzQOq_23wh9_W5_mn?usp=drive_link
+음원|그루터기|2025|그루터기 19집|영원의 시작|https://drive.google.com/drive/folders/160Md4jZ8IyK4C7xHx6AeDsbqW2cbRq1Z?usp=drive_link
+음원|그루터기|2024|그루터기 18집|영원하신 여호와|https://drive.google.com/drive/folders/10k3fddZcjw5lGZwLp5Kl5lK_vUjT-JnQ?usp=drive_link
+음원|그루터기|2018|그루터기 13집|렘넌트를 축복합니다|https://drive.google.com/drive/folders/16D8_yz29PZkvbrp0BjaZjO-SZxgQL9Vj
 음원|그루터기|2017|그루터기 12집|나, 나의 것, 나의 현|https://drive.google.com/drive/folders/136Ksb9S2pnc3YSFyqM3gciCbJlj-o65r
 음원|그루터기|2016|그루터기 11집|난 이제 알았네|https://drive.google.com/drive/folders/1LrHFMx3wfp1QutIinbWThIh9q0FaEPyI
 음원|그루터기|2015|그루터기 10집|아무도 가르쳐주지 않는 길|https://drive.google.com/drive/folders/1RWfItKDTha5j4TuvP1KHQ_r4qR9r-H68
