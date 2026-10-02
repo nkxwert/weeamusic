@@ -256,7 +256,7 @@
    - items.txt는 이 페이지와 같은 repo(GitHub Pages)에서 바로 읽으므로 설정 불필요
    - 아래 GitHub 정보는 "패치 노트(Release)"에만 사용됩니다
    ========================================================= */
-const GITHUB_OWNER  = 'nkwert';  // 예: octocat
+const GITHUB_OWNER  = 'nkxwert';  // 예: octocat
 const GITHUB_REPO   = 'weeamusic';        // 예: weea-music-site
 const GITHUB_BRANCH = 'main';                  // 기본 브랜치 이름 (보통 main)
 const CONTACT_EMAIL = 'rgsnoah1150@gmail.com';
@@ -278,29 +278,11 @@ const NEW_VISITOR_WINDOW_DAYS = 7; // 처음 방문한 사람에게도 최근 N�
    ========================================================= */
 let SITE_DATA = {
   sheetMusic: {
-    items: [
-      { name:"2025 WRC 악보 모음집", desc:"제목이랑 같음.", year:"", url:"https://drive.google.com/uc?export=download&id=1AoT1y0_lC5ExsCbB-aRL4UmqhsauH59X", label:"Download" },
-      { name:"찬양선교총국", desc:"더 많은 악보는 이 사이트를 방문하세요.", year:"", url:"http://www.praise237.com/index.php", label:"Go" }
-    ]
-  },
+    items: [] },
   textbook: { items: [] },
   audio: {
-    groups: [
-      { key:"grooturgy", label:"그루터기", items:[
-        { name:"그루터기 25집", desc:"세계복음화전도협회에서 발매한 그루터기 25집입니다", year:"2025", url:"https://drive.google.com/drive/folders/1FUrImpVuOgXI7oJerSoT4DC_YXyR4sk1?usp=sharing" },
-        { name:"그루터기 19집", desc:"세계복음화전도협회에서 발매", year:"2019", url:"https://drive.google.com/drive/folders/160Md4jZ8IyK4C7xHx6AeDsbqW2cbRq1Z" },
-        { name:"그루터기 13집", desc:"세계복음화전도협회에서 발매", year:"2013", url:"https://drive.google.com/drive/folders/16D8_yz29PZkvbrp0BjaZjO-SZxgQL9Vj" },
-        { name:"그루터기 12집", desc:"세계복음화전도협회에서 발매", year:"2012", url:"https://drive.google.com/drive/folders/136Ksb9S2pnc3YSFyqM3gciCbJlj-o65r" },
-        { name:"그루터기 11집", desc:"세계복음화전도협회에서 발매", year:"2011", url:"https://drive.google.com/drive/folders/1LrHFMx3wfp1QutIinbWThIh9q0FaEPyI" },
-        { name:"그루터기 10집", desc:"세계복음화전도협회에서 발매", year:"2010", url:"https://drive.google.com/drive/folders/1RWfItKDTha5j4TuvP1KHQ_r4qR9r-H68" },
-        { name:"그루터기 9집", desc:"세계복음화전도협회에서 발매", year:"2009", url:"https://drive.google.com/drive/folders/14lhyMdEVK8J6shrhGhf28NA8DDtPbMfD" },
-        { name:"그루터기 8집", desc:"세계복음화전도협회에서 발매", year:"2008", url:"https://drive.google.com/drive/folders/19bM_IDFIN3YGOghehpFmD3tx0zG8XHWG" },
-        { name:"그루터기 라이브", desc:"", year:"", url:"https://drive.google.com/drive/folders/1jeFKJ09VQ73HhimQOSVUj8GlRhRjQ-pN" }
-      ]},
-      { key:"covenant", label:"언약과 꿈", items:[
-        { name:"예수생명 best1", desc:"", year:"", url:"https://drive.google.com/drive/folders/15f5D0ImQd9r9Tg8BzmkKZs8QJwCIlZkP" },
-        { name:"예수생명 best2", desc:"", year:"", url:"https://drive.google.com/drive/folders/1T0BtoMzyaID5zJ-RNzum_BlepekbSA4j" }
-      ]},
+    groups: [] },
+      { key:"covenant", label:"언약과 꿈", items:[] },
       { key:"etc", label:"기타", items:[] }
     ]
   }
