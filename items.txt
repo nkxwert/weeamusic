@@ -14,6 +14,8 @@
 # =========================================================
 
 # ---------- 악보 ----------
+악보|-|-|2026 WRC 악보 모음집|-|https://drive.google.com/file/d/1mn4gwBZw48hRpJVuw9UR3hX210s6qRTw/view?usp=drivesdk
+악보|-|-|2026 언약과꿈 악보 모음집|-|https://drive.google.com/file/d/1IUS7Pwhdy3qpAJ41xa5K8hwj3U0IcLMh/view?usp=drivesdk
 악보|-|-|2025 WRC 악보 모음집|제목이랑 같음.|https://drive.google.com/uc?export=download&id=1AoT1y0_lC5ExsCbB-aRL4UmqhsauH59X
 악보|-|-|찬양선교총국|더 많은 악보는 이 사이트를 방문하세요.|http://www.praise237.com/index.php
 
